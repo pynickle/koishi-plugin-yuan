@@ -1,4 +1,4 @@
-﻿import crypto from 'crypto';
+import crypto from 'crypto';
 
 import { Context } from 'koishi';
 
@@ -90,14 +90,13 @@ export function cookie(ctx: Context, config: Config) {
         return (koaCtx.status = 400);
       }
 
-      // 计算原始字符串的 MD5（如果有 secretKey，使用 HMAC；否则纯 MD5）
       let computedHash: string;
       if (config.bili.secretKey) {
         const hmac = crypto.createHmac('md5', config.bili.secretKey);
         hmac.update(original);
         computedHash = hmac.digest('hex');
       } else {
-        computedHash = crypto.createHash('md5').update(original).digest('hex'); // 优化：明确纯 MD5
+        computedHash = crypto.createHash('md5').update(original).digest('hex');
       }
 
       if (computedHash !== md5) {
@@ -131,7 +130,6 @@ export function cookie(ctx: Context, config: Config) {
 
       const cookieInfo: Cookie[] = await convertCookies(cookie);
       if (cookieInfo.length === 0) {
-        // 优化：检查转换结果
         koaCtx.response.body = { error: 'Failed to convert cookies' };
         return (koaCtx.status = 400);
       }
@@ -146,7 +144,6 @@ export function cookie(ctx: Context, config: Config) {
         createdAt: now,
       });
 
-      // 响应成功
       koaCtx.response.body = { success: true, bindCode };
       koaCtx.status = 200;
     } catch (error) {
@@ -158,7 +155,6 @@ export function cookie(ctx: Context, config: Config) {
 
   ctx.setInterval(
     async () => {
-      // 每小时
       const oneHourAgo = Date.now() - 3600000;
       const expiredRecords = await ctx.database.get('bili_bind', {
         createdAt: { $lt: oneHourAgo },
@@ -171,5 +167,5 @@ export function cookie(ctx: Context, config: Config) {
       }
     },
     7 * 24 * 60 * 60 * 1000
-  ); // 每 7 天运行一次
+  );
 }

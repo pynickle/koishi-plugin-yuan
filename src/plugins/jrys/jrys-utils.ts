@@ -1,24 +1,22 @@
 import 'koishi-plugin-puppeteer';
 
 import axios from 'axios';
-import { Context } from 'koishi';
 import { Solar } from 'lunar-typescript';
 
 import { BiasType, random, randomChoice, randomInt } from '../../utils/pseudo-random-utils';
 
 export interface FortuneData {
-  score: number; // 运势分数
-  randomNum: number; // 每日固定随机数
-  sentence: string; // 一言内容
-  sentenceFrom: string; // 一言出处
-  dos: string; // 宜
-  donts: string; // 忌
-  luckyColor: string; // 幸运颜色
-  luckyNumber: number; // 幸运数字
-  solarDate: string; // 阳历日期
+  score: number;
+  randomNum: number;
+  sentence: string;
+  sentenceFrom: string;
+  dos: string;
+  donts: string;
+  luckyColor: string;
+  luckyNumber: number;
+  solarDate: string;
 }
 
-// 英文键的颜色映射
 export const COLOR_MAP: Record<string, string> = {
   red: '#ff0000',
   orange: '#ffa500',
@@ -36,7 +34,6 @@ export const COLOR_MAP: Record<string, string> = {
   beige: '#f5f5dc',
 };
 
-// 英文键到中文显示名称的映射
 export const COLOR_NAME_MAP: Record<string, string> = {
   red: '红色',
   orange: '橙色',
@@ -54,19 +51,10 @@ export const COLOR_NAME_MAP: Record<string, string> = {
   beige: '米色',
 };
 
-/**
- * 计算运势数据
- */
-export async function calculateFortune(
-  ctx: Context,
-  userId: string,
-  targetDate: Date,
-  isTomorrow: boolean = false
-): Promise<FortuneData> {
+export async function calculateFortune(userId: string, targetDate: Date): Promise<FortuneData> {
   const solar = Solar.fromDate(targetDate);
   const lunar = solar.getLunar();
 
-  // 生成种子，区分今日和明日
   const seed1 = `${userId}${targetDate.getFullYear()}${targetDate.getMonth()}${targetDate.getDate()}`;
   const seed2 = `${seed1}_;Y?hv7P.aFLf[w]?O"}MBsc')V=)hD(?)`;
 
@@ -78,30 +66,24 @@ export async function calculateFortune(
 
   const colorKeys: string[] = Object.keys(COLOR_MAP) as Array<string>;
   const englishColorKey: string = randomChoice<string>(colorKeys, seed2);
-  // 转换为中文显示名称
+
   const luckyColor: string = COLOR_NAME_MAP[englishColorKey];
 
-  // 计算幸运数字（1-100）
   const luckyNumber = randomInt(1, 100, seed2);
 
-  // 获取阳历日期字符串
   const solarDate = `${targetDate.getFullYear()}年${targetDate.getMonth() + 1}月${targetDate.getDate()}日`;
 
-  // 获取宜和忌
   const dos = lunar.getDayYi().slice(0, 7).join(' ');
   const donts = lunar.getDayJi().slice(0, 7).join(' ');
 
-  // 获取一言数据
   let sentence: string, sentenceFrom: string;
   try {
-    // 对于今日运势，尝试获取真实的一言数据
     const res = await axios.get('http://hitokoto_api:8000', {
       timeout: 5000,
     });
     sentence = res.data.hitokoto;
     sentenceFrom = res.data.from;
   } catch (error) {
-    // 出错时使用备用的一言数据
     const fallbackSentences = [
       '心若向阳，无畏悲伤。',
       '一切都会好起来的。',
@@ -126,9 +108,6 @@ export async function calculateFortune(
   };
 }
 
-/**
- * 获取图片并转换为 base64 格式，支持超时和备用图片
- */
 export async function getFortuneImageBase64(randomNum: number): Promise<string> {
   const picsumUrl = `https://picsum.photos/seed/${randomNum}/400/120`;
 
@@ -155,13 +134,7 @@ export async function getFortuneImageBase64(randomNum: number): Promise<string> 
   }
 }
 
-/**
- * 构建运势图片的 HTML 内容
- */
-export async function buildFortuneHtml(
-  fortuneData: FortuneData,
-  isTomorrow: boolean = false
-): Promise<string> {
+export async function buildFortuneHtml(fortuneData: FortuneData): Promise<string> {
   const imageUrl = await getFortuneImageBase64(fortuneData.randomNum);
   const luckyColorValue = getColorValue(fortuneData.luckyColor);
   return `
@@ -170,7 +143,7 @@ export async function buildFortuneHtml(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=400, initial-scale=1.0">
-    <title>${isTomorrow ? '明日' : '今日'}运势</title>
+    <title>今日运势</title>
     <link href="https://cdn.bootcdn.net/ajax/libs/bulma/1.0.4/css/bulma.min.css" rel="stylesheet">
     <style>
         body {
@@ -263,7 +236,7 @@ export async function buildFortuneHtml(
     <div class="hero-image">
         <img src="${imageUrl}" alt="每日运势图片">
         <div class="hero-text">
-            <p class="title is-4 has-text-white">${isTomorrow ? '明日' : '今日'}运势</p>
+            <p class="title is-4 has-text-white">今日运势</p>
         </div>
         <div class="hero-date">
             <p class="subtitle is-6 has-text-white">${fortuneData.solarDate}</p>
@@ -287,16 +260,11 @@ export async function buildFortuneHtml(
     `;
 }
 
-/**
- * 获取颜色的十六进制值
- */
 export function getColorValue(colorName: string): string {
-  // 如果传入的是英文键，直接从 COLOR_MAP 获取
   if (COLOR_MAP[colorName]) {
     return COLOR_MAP[colorName];
   }
 
-  // 如果传入的是中文名称，查找对应的英文键
   const englishKey = Object.keys(COLOR_NAME_MAP).find((key) => COLOR_NAME_MAP[key] === colorName);
   if (englishKey) {
     return COLOR_MAP[englishKey] || '#000000';

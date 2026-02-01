@@ -3,7 +3,7 @@ import { Context } from 'koishi';
 
 import { Config } from '../../../config/config';
 import { extractBiliJct } from '../../../utils/bili/cookie-utils';
-import { encWbi, getWbiKeys, initWbiKeysCache } from '../../../utils/bili/wbi-utils';
+import { generateSignedUrl, getWbiKeys, initWbiKeysCache } from '../../../utils/bili/wbi-utils';
 import { getRandomUserAgent } from '../../../utils/web-utils';
 
 async function sendThousandLikes(
@@ -84,13 +84,7 @@ async function sendThousandLikes(
       return '🌸 获取 WBI 签名失败，请稍后重试';
     }
 
-    let signedQuery = encWbi(params, wbiKeys.img_key, wbiKeys.sub_key);
-
-    const crypto = await import('crypto');
-    const md5 = crypto.createHash('md5').update(signedQuery.slice(0, -8)).digest('hex');
-    signedQuery = signedQuery.slice(0, -8) + md5;
-
-    const requestUrl = `${baseUrl}?${signedQuery}`;
+    const requestUrl = await generateSignedUrl(baseUrl, params, wbiKeys.img_key, wbiKeys.sub_key);
 
     const response = await axios.post(requestUrl, undefined, {
       headers: {

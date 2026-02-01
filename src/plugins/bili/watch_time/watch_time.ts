@@ -2,7 +2,12 @@ import axios from 'axios';
 import { Context } from 'koishi';
 
 import { Config } from '../../../config/config';
-import { encWbi, getWbiKeys, initWbiKeysCache } from '../../../utils/bili/wbi-utils';
+import {
+  encWbi,
+  generateSignedUrl,
+  getWbiKeys,
+  initWbiKeysCache,
+} from '../../../utils/bili/wbi-utils';
 import { getRandomUserAgent } from '../../../utils/web-utils';
 
 export const name = 'bili-watch-time';
@@ -85,8 +90,7 @@ export function watch_time(ctx: Context, config: Config) {
           return '获取 WBI 签名失败，请稍后重试';
         }
 
-        const signedQuery = encWbi(params, wbiKeys.img_key, wbiKeys.sub_key);
-        const requestUrl = `${baseUrl}?${signedQuery}`;
+        const requestUrl = await generateSignedUrl(baseUrl, params, wbiKeys.img_key, wbiKeys.sub_key);
 
         const response = await axios.get(requestUrl, {
           headers,
@@ -94,7 +98,6 @@ export function watch_time(ctx: Context, config: Config) {
 
         const data = response.data;
 
-        // 处理响应
         if (data.code === 0 && data.data) {
           const result = data.data;
           const watchTime = result.watch_time || 0;
@@ -140,8 +143,7 @@ export function watch_time(ctx: Context, config: Config) {
         }
       } catch (error) {
         ctx.logger('bili-watch-time').error('观看时长查询请求失败：', error);
-        ctx.logger('bili-watch-time').info(error.message);
-        return `查询失败：${error instanceof Error ? error.message : '未知错误'}`;
+        return `查询失败：${error.message}`;
       }
     });
 }

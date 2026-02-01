@@ -100,7 +100,7 @@ function createXoshiro256ppGenerator(seed: string): () => number {
 
     s3 = rotl(s3, 45);
 
-    return Number(result & ((1n << 64n) - 1n)) / Number(1n << 64n); // 归一化到 [0, 1)
+    return Number(result & ((1n << 64n) - 1n)) / Number(1n << 64n);
   };
 }
 

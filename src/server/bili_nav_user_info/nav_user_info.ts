@@ -32,7 +32,6 @@ async function getBilibiliNav(data) {
 export function nav_user_info(ctx: Context, config: Config) {
   ctx.server.post('/api/user-info', async (koaCtx: any) => {
     try {
-      // 解析 JSON 请求体
       let body = koaCtx.request.body;
       if (!body) {
         koaCtx.response.body = { error: 'Invalid JSON body' };
@@ -67,7 +66,6 @@ export function nav_user_info(ctx: Context, config: Config) {
 
 async function loadImageAsBase64(imageUrl: string): Promise<string> {
   try {
-    // Step 1: 使用 axios 获取图片作为 buffer
     const response = await axios.get(imageUrl, {
       responseType: 'arraybuffer',
       headers: {
@@ -75,10 +73,8 @@ async function loadImageAsBase64(imageUrl: string): Promise<string> {
       },
     });
 
-    // Step 2: 从响应头获取 MIME 类型（fallback 到 image/png）
     const mimeType = response.headers['content-type'] || 'image/png';
 
-    // Step 3: 将 buffer 转换为 base64，并构造完整 data URL
     const base64Data = Buffer.from(response.data, 'binary').toString('base64');
     return `data:${mimeType};base64,${base64Data}`;
   } catch (error) {

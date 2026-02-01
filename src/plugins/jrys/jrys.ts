@@ -17,7 +17,7 @@ class JrysPlugin {
   }
 
   private async handleJrysCommand(session: Session): Promise<string> {
-    const fortuneData = await calculateFortune(this.ctx, session.userId, new Date());
+    const fortuneData = await calculateFortune(session.userId, new Date());
     try {
       await session.bot.internal.setMsgEmojiLike(session.messageId, getEmojiByName('棒棒糖').id);
       return await this.renderToImage(fortuneData);

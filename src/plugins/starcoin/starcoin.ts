@@ -4,6 +4,7 @@ import * as emoji from 'node-emoji';
 import { createTextMsgNode, getUserName } from '../../utils/onebot-utils';
 import { randomInt } from '../../utils/pseudo-random-utils';
 import { StarCoinHelper } from '../../utils/starcoin-utils';
+import { isSameDay } from '../../utils/time-utils';
 
 export interface SignIn {
   id: number;
@@ -60,14 +61,6 @@ class StarcoinPlugin {
       .where({ userId, channelId })
       .execute();
     return records.length > 0 ? records[0] : null;
-  }
-
-  private isSameDay(date1: Date, date2: Date): boolean {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
   }
 
   private calculateRandomEvent(baseCoin: number): {
@@ -164,7 +157,7 @@ class StarcoinPlugin {
 
     if (userRecord) {
       const lastSignInDate = new Date(userRecord.lastSignIn);
-      if (this.isSameDay(today, lastSignInDate)) {
+      if (isSameDay(today, lastSignInDate)) {
         return '你今天已经签到过了，明天再来吧！😺';
       }
     }
@@ -175,7 +168,7 @@ class StarcoinPlugin {
 
     const nowTimestamp = now.getTime();
     if (lastSignIn && nowTimestamp - lastSignIn > Time.day * 2) {
-      consecutiveDays = 0; // 断签，重置连续天数
+      consecutiveDays = 0;
     }
 
     const baseCoin = randomInt(10, 50, Date.now().toString());
@@ -221,7 +214,7 @@ class StarcoinPlugin {
       .select('sign_in')
       .where({ channelId: session.channelId })
       .orderBy('starCoin', 'desc')
-      .limit(20) // 限制显示前 20 名
+      .limit(20)
       .execute();
 
     if (users.length === 0) {

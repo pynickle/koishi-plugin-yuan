@@ -5,11 +5,11 @@ import { Config } from '../../../config/config';
 interface UserBiliInfo {
   id: number;
   userId: string;
-  cookie: string; // 原始 cookie 字符串
-  cookieInfo: any[]; // 解析后的 cookie 信息数组
-  mid: number; // B 站用户 UID
-  userName: string; // B 站用户名
-  bindTime: number; // 绑定时间戳
+  cookie: string;
+  cookieInfo: any[];
+  mid: number;
+  userName: string;
+  bindTime: number;
 }
 
 declare module 'koishi' {
@@ -39,7 +39,6 @@ export async function bind(ctx: Context, config: Config) {
     }
   );
 
-  // 注册 bind 指令
   ctx
     .command('bili.bind <bindCode:number>', '绑定 B 站账号')
     .action(async ({ session }, bindCode) => {
@@ -74,14 +73,12 @@ export async function bind(ctx: Context, config: Config) {
 
         const bindRecord = bindRecords[0];
 
-        // 检查用户是否已绑定
         const existingBind = await ctx.database
           .select('user_bili_info')
           .where({ userId })
           .execute();
 
         if (existingBind.length > 0) {
-          // 更新现有绑定
           await ctx.database.set(
             'user_bili_info',
             { userId },
@@ -94,7 +91,6 @@ export async function bind(ctx: Context, config: Config) {
             }
           );
         } else {
-          // 创建新绑定
           await ctx.database.create('user_bili_info', {
             userId,
             cookie: bindRecord.cookie,
@@ -105,7 +101,6 @@ export async function bind(ctx: Context, config: Config) {
           });
         }
 
-        // 绑定成功后删除临时绑定码记录
         await ctx.database.remove('bili_bind', { bindCode });
 
         return 'B 站账号绑定成功！';
@@ -115,7 +110,6 @@ export async function bind(ctx: Context, config: Config) {
       }
     });
 
-  // 注册解绑指令
   ctx.command('bili.unbind', '解绑 B 站账号').action(async ({ session }) => {
     if (!session.guildId) {
       return '请在群聊中使用解绑命令哦！';
@@ -145,7 +139,6 @@ export async function bind(ctx: Context, config: Config) {
     }
   });
 
-  // 注册查询绑定状态指令
   ctx.command('bili.status', '查询 B 站账号绑定状态').action(async ({ session }) => {
     if (!session.guildId) {
       return '🌸 请在群聊中使用查询命令哦！';

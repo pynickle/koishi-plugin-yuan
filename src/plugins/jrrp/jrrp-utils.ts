@@ -3,13 +3,11 @@ import { Context, Session } from 'koishi';
 import { randomInt } from '../../utils/pseudo-random-utils';
 import { getFestivalBonus, getFestivals } from './festival-utils';
 
-// 运势等级配置接口
 export interface LuckLevel {
   min: number;
   message: (luck: number) => string;
 }
 
-// 人品等级配置
 const LUCK_LEVELS: readonly LuckLevel[] = [
   {
     min: 90,
@@ -83,13 +81,11 @@ export async function calculateAndStoreLuck(
   isTomorrow: boolean = false
 ): Promise<number> {
   const { userId } = session;
-  // 生成种子，区分今日和明日的计算
   const seed = isTomorrow ? `${date}${userId}` : Date.now().toString();
   const baseLuck = randomInt(1, 100, seed);
   const { bonus } = getFestivalBonusForLuck(userId, date);
   let finalLuck = baseLuck + bonus;
 
-  // 确保在 1-100 范围内
   finalLuck = Math.max(1, Math.min(100, finalLuck));
 
   await storeLuckRecord(ctx, userId, date, finalLuck);
@@ -137,9 +133,8 @@ export function formatLuckMessage(
   luck: number
 ): string {
   const { userId } = session;
-  const isTomorrow = true; // 因为这个函数在 foresee 插件中只用于明日人品
+  const isTomorrow = true;
 
-  // 针对明日人品自定义消息
   const luckLevelMessages = [
     {
       min: 90,
