@@ -1,9 +1,9 @@
 import '@pynickle/koishi-plugin-adapter-onebot';
 
 import { Context } from 'koishi';
-import { cookie } from 'koishi-plugin-edge-seeker/lib/server/bili_cookie/cookie';
-import { nav_user_info } from 'koishi-plugin-edge-seeker/lib/server/bili_nav_user_info/nav_user_info';
-import { cors } from 'koishi-plugin-edge-seeker/lib/server/cors';
+import { cookie } from './server/bili_cookie/cookie';
+import { nav_user_info } from './server/bili_nav_user_info/nav_user_info';
+import { cors } from './server/cors';
 
 import { Config } from './config/config';
 import { bind } from './plugins/bili/bind/bind';
