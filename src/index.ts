@@ -1,9 +1,6 @@
 import '@pynickle/koishi-plugin-adapter-onebot';
 
 import { Context } from 'koishi';
-import { cookie } from './server/bili_cookie/cookie';
-import { nav_user_info } from './server/bili_nav_user_info/nav_user_info';
-import { cors } from './server/cors';
 
 import { Config } from './config/config';
 import { bind } from './plugins/bili/bind/bind';
@@ -13,6 +10,9 @@ import JrrpPlugin from './plugins/jrrp/jrrp';
 import JrysPlugin from './plugins/jrys/jrys';
 import StarCoinPlugin from './plugins/starcoin/starcoin';
 import { zanwo } from './plugins/zanwo/zanwo';
+import { cookie } from './server/bili_cookie/cookie';
+import { nav_user_info } from './server/bili_nav_user_info/nav_user_info';
+import { cors } from './server/cors';
 
 export const name = 'yuan';
 

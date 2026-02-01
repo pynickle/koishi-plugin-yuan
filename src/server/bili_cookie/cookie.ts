@@ -1,6 +1,4 @@
-﻿import '@koishijs/plugin-server';
-
-import crypto from 'crypto';
+﻿import crypto from 'crypto';
 
 import { Context } from 'koishi';
 
@@ -35,7 +33,6 @@ declare module 'koishi' {
   }
 }
 
-// Cookie 转换
 async function convertCookies(cookie: string): Promise<Cookie[]> {
   try {
     const response = await fetch('http://47.117.27.240:3000/api/convert', {
