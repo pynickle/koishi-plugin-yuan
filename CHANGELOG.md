@@ -1,3 +1,9 @@
+## [1.0.5](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.4...v1.0.5) (2026-02-01)
+
+### 🐛 Bug Fixes
+
+* use _request ([dcd94b3](https://github.com/pynickle/koishi-plugin-yuan/commit/dcd94b3814a9495b877cd85e7201d4ae66b961b7))
+
 ## [1.0.4](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.3...v1.0.4) (2026-02-01)
 
 ### 🐛 Bug Fixes
