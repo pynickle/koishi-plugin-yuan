@@ -1,3 +1,9 @@
+## [1.0.8](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.7...v1.0.8) (2026-02-01)
+
+### 🚀 Improvements
+
+* improve jrys pic ([1d7ecf7](https://github.com/pynickle/koishi-plugin-yuan/commit/1d7ecf7a70b4462b2ba98fcb736d0c424255d5d6))
+
 ## [1.0.7](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.6...v1.0.7) (2026-02-01)
 
 ### 💄 Style Improvements
