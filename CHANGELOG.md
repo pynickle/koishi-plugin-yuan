@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.1...v1.0.2) (2026-02-01)
+
+### 🐛 Bug Fixes
+
+* fix wrong messageId used for set msg emoji like ([17130b6](https://github.com/pynickle/koishi-plugin-yuan/commit/17130b612d73a2b1873c324f1b84c86f82d42529))
+
 ## [1.0.1](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.0...v1.0.1) (2026-02-01)
 
 ### 🔧 Miscellaneous Changes
