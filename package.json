@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pynickle/koishi-plugin-yuan"
+    "url": "git+https://github.com/pynickle/koishi-plugin-yuan.git"
   },
   "files": [
     "lib",
