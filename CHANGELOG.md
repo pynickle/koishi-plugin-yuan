@@ -1,3 +1,11 @@
+## [1.0.3](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.2...v1.0.3) (2026-02-01)
+
+### 🐛 Bug Fixes
+
+* fix missing config ([b48177d](https://github.com/pynickle/koishi-plugin-yuan/commit/b48177d36ba79b3a93adbd822871808f5a7fea4f))
+* fix wrong import ([be8db3c](https://github.com/pynickle/koishi-plugin-yuan/commit/be8db3c5b7192f28db00a33018861a9f21b755c1))
+* remove wrong import ([c3a87ae](https://github.com/pynickle/koishi-plugin-yuan/commit/c3a87ae7d2ebb2b88352b00570a332727b203f8f))
+
 ## [1.0.2](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.1...v1.0.2) (2026-02-01)
 
 ### 🐛 Bug Fixes
