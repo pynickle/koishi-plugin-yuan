@@ -1,3 +1,9 @@
+## [1.0.4](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.3...v1.0.4) (2026-02-01)
+
+### 🐛 Bug Fixes
+
+* test internal with set msg emoji like ([e068a92](https://github.com/pynickle/koishi-plugin-yuan/commit/e068a9224e76e50e1d27d742dd43a134eac001a4))
+
 ## [1.0.3](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.2...v1.0.3) (2026-02-01)
 
 ### 🐛 Bug Fixes
