@@ -19,7 +19,10 @@ class JrysPlugin {
   private async handleJrysCommand(session: Session): Promise<string> {
     const fortuneData = await calculateFortune(this.ctx, session.userId, new Date());
     try {
-      await session.bot.internal.setMsgEmojiLike(session.messageId, getEmojiByName('棒棒糖').id);
+      await session.onebot._request('set_msg_emoji_like', {
+        message_id: session.messageId,
+        emoji_id: getEmojiByName('棒棒糖').id,
+      });
       return await this.renderToImage(fortuneData);
     } catch (error) {
       return '生成今日运势图片失败：' + error.message;
