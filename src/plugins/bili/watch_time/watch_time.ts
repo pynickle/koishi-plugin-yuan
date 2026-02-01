@@ -2,12 +2,7 @@ import axios from 'axios';
 import { Context } from 'koishi';
 
 import { Config } from '../../../config/config';
-import {
-  encWbi,
-  generateSignedUrl,
-  getWbiKeys,
-  initWbiKeysCache,
-} from '../../../utils/bili/wbi-utils';
+import { generateSignedUrl, getWbiKeys, initWbiKeysCache } from '../../../utils/bili/wbi-utils';
 import { getRandomUserAgent } from '../../../utils/web-utils';
 
 export const name = 'bili-watch-time';
@@ -90,7 +85,12 @@ export function watch_time(ctx: Context, config: Config) {
           return '获取 WBI 签名失败，请稍后重试';
         }
 
-        const requestUrl = await generateSignedUrl(baseUrl, params, wbiKeys.img_key, wbiKeys.sub_key);
+        const requestUrl = await generateSignedUrl(
+          baseUrl,
+          params,
+          wbiKeys.img_key,
+          wbiKeys.sub_key
+        );
 
         const response = await axios.get(requestUrl, {
           headers,

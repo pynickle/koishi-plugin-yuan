@@ -27,24 +27,6 @@ export function randomInt(
   return Math.floor(value * (max - min + 1)) + min;
 }
 
-export function randomFloat(
-  min: number,
-  max: number,
-  seed: string = '',
-  options: RandomOptions = {}
-): number {
-  const value = seed.length > 0 ? random(seed, options) : Math.random();
-  return value * (max - min) + min;
-}
-
-export function randomBool(
-  seed: string,
-  probability: number = 0.5,
-  options: RandomOptions = {}
-): boolean {
-  return (seed.length > 0 ? random(seed, options) : Math.random()) < probability;
-}
-
 export function randomChoice<T>(
   array: T[] | readonly T[],
   seed: string = '',

@@ -114,10 +114,9 @@ export async function thousand_likes(ctx: Context, config: Config) {
 
   ctx
     .command(
-      'bili.thousand-likes <roomId:string> [click:number]',
+      'bili.qz <roomId:string> [click:number]',
       '向指定直播间发送 1000 (或自定义) 次点赞'
     )
-    .alias('bili.qz')
     .action(async ({ session }, roomId, click) => {
       if (!session.guildId) {
         return '请在群聊中使用该命令哦！';
