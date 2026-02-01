@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "singleQuote": true,
+  "experimentalSortImports": {
+    "groups": [
+      ["side-effect"],
+      ["builtin"],
+      ["external"],
+      ["internal"],
+      ["parent", "sibling", "index"]
+    ],
+    "internalPattern": ["@/", "~/"],
+    "ignoreCase": true,
+    "newlinesBetween": true,
+    "sortSideEffects": false
+  }
+}

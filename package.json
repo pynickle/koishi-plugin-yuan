@@ -1,0 +1,47 @@
+{
+  "name": "koishi-plugin-yuan",
+  "version": "1.0.0",
+  "description": "Yuan Bot",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pynickle/koishi-plugin-yuan"
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "type": "module",
+  "main": "lib/index.cjs",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "lint": "npx oxlint ./",
+    "lint:fix": "npx oxlint ./ --fix",
+    "fmt": "npx oxfmt ./",
+    "build": "node esbuild.config.js && tsc --emitDeclarationOnly",
+    "release": "semantic-release"
+  },
+  "dependencies": {
+    "@pynickle/koishi-plugin-adapter-onebot": "^1.0.0",
+    "axios": "^1.13.4",
+    "lunar-typescript": "^1.8.6",
+    "node-emoji": "^2.1.3"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^13.1.3",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "@types/node": "^24.10.9",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
+    "esbuild": "^0.27.2",
+    "oxfmt": "^0.27.0",
+    "oxlint": "^1.42.0",
+    "semantic-release": "^25.0.3",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "koishi": "^4.18.10"
+  }
+}

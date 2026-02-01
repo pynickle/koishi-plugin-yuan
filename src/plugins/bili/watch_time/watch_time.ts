@@ -1,0 +1,147 @@
+import axios from 'axios';
+import { Context } from 'koishi';
+
+import { Config } from '../../../config/config';
+import { encWbi, getWbiKeys, initWbiKeysCache } from '../../../utils/bili/wbi-utils';
+import { getRandomUserAgent } from '../../../utils/web-utils';
+
+export const name = 'bili-watch-time';
+
+function formatWatchTime(seconds: number): string {
+  const days = Math.floor(seconds / 86400);
+  const hours = Math.floor((seconds % 86400) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+
+  let result = '';
+  if (days > 0) result += `${days} 天 `;
+  if (hours > 0) result += `${hours} 小时 `;
+  if (minutes > 0) result += `${minutes} 分钟 `;
+  if (remainingSeconds > 0 || result === '') result += `${remainingSeconds} 秒`;
+
+  return result;
+}
+
+export function watch_time(ctx: Context, config: Config) {
+  initWbiKeysCache(ctx);
+  ctx
+    .command('bili.watch_time <ruid:number>', '查询自己在某 B 站直播间的观看时长')
+    .action(async ({ session }, ruid) => {
+      if (!session.guildId) {
+        return '请在群聊中使用该命令哦！';
+      }
+
+      if (
+        config.bili.allowedGroups.length > 0 &&
+        !config.bili.allowedGroups.includes(session.guildId)
+      ) {
+        return;
+      }
+      if (!ruid) return '请提供主播的 uid 参数';
+
+      if (!Number.isInteger(ruid) || ruid <= 0) {
+        return `主播 uid 格式不正确：${ruid}`;
+      }
+
+      const userId = session.userId;
+      const userInfo = await ctx.database.get('user_bili_info', {
+        userId,
+      });
+
+      if (!userInfo || userInfo.length === 0) {
+        return '请先绑定 B 站账号：/bili.bind';
+      }
+
+      const user = userInfo[0];
+      let cookie = user.cookie;
+
+      if (!cookie) {
+        return '绑定信息不完整，请重新绑定：/bili.bind';
+      }
+
+      try {
+        const uid = user.mid;
+
+        if (!uid) {
+          return '无法从绑定信息中获取必要的用户凭证，请重新绑定账号';
+        }
+
+        const headers = {
+          Cookie: cookie,
+          'User-Agent': getRandomUserAgent(),
+          Referer: `https://live.bilibili.com/`,
+          Origin: 'https://live.bilibili.com',
+        };
+
+        const baseUrl =
+          'https://api.live.bilibili.com/xlive/general-interface/v1/guard/GuardActive';
+        const params: Record<string, string> = {
+          platform: 'android',
+          ruid: ruid.toString(),
+        };
+
+        const wbiKeys = await getWbiKeys(ctx, cookie, Number(uid));
+        if (!wbiKeys) {
+          return '获取 WBI 签名失败，请稍后重试';
+        }
+
+        const signedQuery = encWbi(params, wbiKeys.img_key, wbiKeys.sub_key);
+        const requestUrl = `${baseUrl}?${signedQuery}`;
+
+        const response = await axios.get(requestUrl, {
+          headers,
+        });
+
+        const data = response.data;
+
+        // 处理响应
+        if (data.code === 0 && data.data) {
+          const result = data.data;
+          const watchTime = result.watch_time || 0;
+          const formattedWatchTime = formatWatchTime(watchTime);
+
+          let message = `🎬 直播间观看时长查询结果\n`;
+          message += `📺 主播：${result.rusername || '未知'}\n`;
+          message += `👤 用户名：${result.username || '未知'}\n`;
+          message += `⏱️ 观看时长：${formattedWatchTime}\n`;
+
+          if (result.accomany_day !== undefined) {
+            message += `🚢 大航海陪伴天数：${result.accomany_day} 天\n`;
+          }
+
+          if (result.is_live !== undefined) {
+            message += `📡 直播状态：${result.is_live === 1 ? '直播中' : '未开播'}\n`;
+          }
+
+          if (result.up_medal) {
+            const medal = result.up_medal;
+            if (medal.medal_name && medal.level) {
+              message += `🏅 粉丝牌：${medal.medal_name} Lv.${medal.level}`;
+            }
+          }
+
+          return message;
+        } else {
+          let errorMsg = `查询失败 (${data.code}): ${data.message || '未知错误'}\n`;
+          switch (data.code) {
+            case -101:
+              errorMsg += '账号未登录，请重新绑定';
+              break;
+            case -403:
+              errorMsg += '账号异常，请确定你使用网页 cookie 绑定 B 站账号';
+              break;
+            case 400:
+              errorMsg += '请求错误，请检查参数';
+              break;
+            default:
+              errorMsg += '请稍后重试';
+          }
+          return errorMsg;
+        }
+      } catch (error) {
+        ctx.logger('bili-watch-time').error('观看时长查询请求失败：', error);
+        ctx.logger('bili-watch-time').info(error.message);
+        return `查询失败：${error instanceof Error ? error.message : '未知错误'}`;
+      }
+    });
+}
