@@ -1,3 +1,5 @@
+## [1.0.6](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.5...v1.0.6) (2026-02-01)
+
 ## [1.0.5](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.4...v1.0.5) (2026-02-01)
 
 ### 🐛 Bug Fixes
