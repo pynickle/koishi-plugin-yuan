@@ -113,10 +113,7 @@ export async function thousand_likes(ctx: Context, config: Config) {
   initWbiKeysCache(ctx);
 
   ctx
-    .command(
-      'bili.qz <roomId:string> [click:number]',
-      '向指定直播间发送 1000 (或自定义) 次点赞'
-    )
+    .command('bili.qz <roomId:string> [click:number]', '向指定直播间发送 1000 (或自定义) 次点赞')
     .action(async ({ session }, roomId, click) => {
       if (!session.guildId) {
         return '请在群聊中使用该命令哦！';
