@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.0...v1.0.1) (2026-02-01)
+
+### 🔧 Miscellaneous Changes
+
+* normalize git url ([3ee3a78](https://github.com/pynickle/koishi-plugin-yuan/commit/3ee3a789d6973112b02bb81dd7af0617b2182410))
+
 ## 1.0.0 (2026-02-01)
 
 ### ✨ Features
