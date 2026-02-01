@@ -1,3 +1,13 @@
+## [1.0.7](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.6...v1.0.7) (2026-02-01)
+
+### 💄 Style Improvements
+
+* clean code ([6acf4f2](https://github.com/pynickle/koishi-plugin-yuan/commit/6acf4f285d87e8d62b25fdbf0d89742b5f27126c))
+
+### 🚀 Improvements
+
+* remove some alias ([ea74e99](https://github.com/pynickle/koishi-plugin-yuan/commit/ea74e997588d6a1d7b35c17592d44184992f60ec))
+
 ## [1.0.6](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.5...v1.0.6) (2026-02-01)
 
 ## [1.0.5](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.4...v1.0.5) (2026-02-01)
