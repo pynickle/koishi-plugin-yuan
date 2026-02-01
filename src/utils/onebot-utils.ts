@@ -1,5 +1,3 @@
-import 'koishi-plugin-adapter-onebot';
-
 import { Context, Session } from 'koishi';
 
 export async function getUserName(ctx: Context, session: Session, userId: string): Promise<string> {

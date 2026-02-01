@@ -24,6 +24,7 @@
   "dependencies": {
     "@pynickle/koishi-plugin-adapter-onebot": "^1.0.0",
     "axios": "^1.13.4",
+    "koishi-plugin-puppeteer": "^3.9.0",
     "lunar-typescript": "^1.8.6",
     "node-emoji": "^2.1.3"
   },
