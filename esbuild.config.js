@@ -12,6 +12,6 @@ await build({
     'axios',
     'lunar-typescript',
     'node-emoji',
-    'koishi-plugin-puppeteer'
+    'koishi-plugin-puppeteer',
   ],
 });
