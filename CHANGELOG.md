@@ -1,3 +1,9 @@
+## [1.0.9](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.8...v1.0.9) (2026-02-07)
+
+### ♻️ Code Refactoring
+
+* change port ([7a09f90](https://github.com/pynickle/koishi-plugin-yuan/commit/7a09f90a45eac37cab54f21ab548b14617c336aa))
+
 ## [1.0.8](https://github.com/pynickle/koishi-plugin-yuan/compare/v1.0.7...v1.0.8) (2026-02-01)
 
 ### 🚀 Improvements
