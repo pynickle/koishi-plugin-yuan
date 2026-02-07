@@ -59,7 +59,7 @@ const FALLBACK_SENTENCES = [
   '今天也要元气满满!',
 ];
 
-const HITOKOTO_API_URL = 'http://hitokoto_api:8000';
+const HITOKOTO_API_URL = 'http://hitokoto_api:8888';
 const HITOKOTO_TIMEOUT = 5000;
 const PICSUM_TIMEOUT = 15000;
 const BACKUP_IMAGE_TIMEOUT = 10000;
